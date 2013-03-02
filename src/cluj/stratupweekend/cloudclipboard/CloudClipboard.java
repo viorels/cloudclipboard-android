@@ -25,8 +25,8 @@ public class CloudClipboard extends Activity {
 	protected void onStop() {
 		super.onStop();
 		
-		stopService(new Intent(this,
-                ClipboardMonitor.class));
+//		stopService(new Intent(this,
+//                ClipboardMonitor.class));
 	}
 
 	@Override

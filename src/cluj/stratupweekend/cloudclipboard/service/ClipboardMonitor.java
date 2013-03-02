@@ -194,6 +194,25 @@ public class ClipboardMonitor extends Service {
                     mOldClip = newClip;
                     
                     // TODO push text here
+                    Hashtable args = new Hashtable(2);
+
+                    String message = newClip;
+
+                    args.put("message", message);
+                    args.put("channel", channel); 
+
+                    pubnub.publish(args, new Callback() {
+                        public void successCallback(String channel, Object message) {
+//                            notifyUser(message.toString());
+                        	Log.d(TAG, message.toString());
+                        }
+
+                        public void errorCallback(String channel, Object message) {
+//                        notifyUser(channel + " : " + message.toString());
+                        	Log.e(TAG, message.toString());
+                        }
+                    });
+
                     
 //                    Toast.makeText(getApplicationContext(), "s-a dat copy la <<" + newClip + ">>", Toast.LENGTH_SHORT).show();
                     
