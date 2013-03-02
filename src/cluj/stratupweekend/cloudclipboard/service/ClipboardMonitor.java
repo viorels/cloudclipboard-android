@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
+import org.json.JSONObject;
+
 import com.pubnub.api.Callback;
 import com.pubnub.api.Pubnub;
 
@@ -42,13 +44,6 @@ import android.widget.Toast;
 public class ClipboardMonitor extends Service {
 	
 	public static String TAG = "CloudClipboard";
-    
-    /** Image type to be monitored */
-    private static final String[] IMAGE_SUFFIXS = new String[] {
-        ".jpg", ".jpeg", ".gif", ".png"
-    };
-    /** Path to browser downloads */
-    private static final String BROWSER_DOWNLOAD_PATH = "/sdcard/download";
     
     private NotificationManager mNM;
     private MonitorTask mTask = new MonitorTask();
@@ -103,8 +98,10 @@ public class ClipboardMonitor extends Service {
 						Object message) {
 					// TODO put in clipboard here
 					Log.d(TAG, "success callback");
+					Log.d(TAG, message.getClass().getName());
 					@SuppressWarnings("unused")
 					String m = message.toString();
+					
 					mCM.setText(m);
 					
 				}
@@ -154,7 +151,7 @@ public class ClipboardMonitor extends Service {
     private class MonitorTask extends Thread {
 
         private volatile boolean mKeepRunning = false;
-        private String mOldClip = null;
+        public String mOldClip = null;
 //        private BrowserDownloadMonitor mBDM = new BrowserDownloadMonitor();
         
         public MonitorTask() {
@@ -203,78 +200,19 @@ public class ClipboardMonitor extends Service {
 
                     pubnub.publish(args, new Callback() {
                         public void successCallback(String channel, Object message) {
-//                            notifyUser(message.toString());
                         	Log.d(TAG, message.toString());
                         }
 
                         public void errorCallback(String channel, Object message) {
-//                        notifyUser(channel + " : " + message.toString());
                         	Log.e(TAG, message.toString());
                         }
                     });
 
-                    
-//                    Toast.makeText(getApplicationContext(), "s-a dat copy la <<" + newClip + ">>", Toast.LENGTH_SHORT).show();
-                    
-//                    mDbAdapter.insertClip(Clip.CLIP_TYPE_TEXT,
-//                            newClip.toString(),
-//                            AppPrefs.operatingClipboardId);
-//                            //mPrefs.getInt(AppPrefs.KEY_OPERATING_CLIPBOARD,
-//                            //        AppPrefs.DEF_OPERATING_CLIPBOARD));
                     Log.i(TAG, "new text clip inserted: " + newClip.toString());
                 }
             }
         }
         
-        /**
-         * Monitor change of download directory of browser. It listens two
-         * events: <tt>CREATE</tt> and <tt>CLOSE_WRITE</tt>. <tt>CREATE</tt>
-         * event occurs when new file created in download directory. If this
-         * file is image, new image clip will be inserted into database when 
-         * receiving <tt>CLOSE_WRITE</tt> event, meaning file is sucessfully
-         * downloaded.
-         */
-//        private class BrowserDownloadMonitor extends FileObserver {
-//
-//            private Set<String> mFiles = new HashSet<String>();
-//            
-//            public BrowserDownloadMonitor() {
-//                super(BROWSER_DOWNLOAD_PATH, CREATE | CLOSE_WRITE);
-//            }
-//            
-//            private void doDownloadCompleteAction(String path) {
-////                mDbAdapter.insertClip(Clip.CLIP_TYPE_IMAGE,
-////                        BROWSER_DOWNLOAD_PATH + "/" + path,
-////                        AppPrefs.operatingClipboardId);
-////                        //mPrefs.getInt(AppPrefs.KEY_OPERATING_CLIPBOARD,
-////                        //        AppPrefs.DEF_OPERATING_CLIPBOARD));
-//                Log.i(TAG, "new image clip inserted: " + path);
-//            }
-//            
-//            @Override
-//            public void onEvent(int event, String path) {
-//                switch (event) {
-//                    case CREATE:
-//                        for (String s : IMAGE_SUFFIXS) {
-//                            if (path.endsWith(s)) {
-//                                Log.i(TAG, "detect new image: " + path);
-//                                mFiles.add(path);
-//                                break;
-//                            }
-//                        }
-//                        break;
-//                    case CLOSE_WRITE:
-//                        if (mFiles.remove(path)) { // File download completes
-//                            doDownloadCompleteAction(path);
-//                        }
-//                        break;
-//                    default:
-//                        Log.w(TAG, "BrowserDownloadMonitor go unexpected event: "
-//                                + Integer.toHexString(event));                        
-////                        throw new RuntimeException("BrowserDownloadMonitor" +
-////                        		" got unexpected event");
-//                }
-//            }
-//        }
+        
     }
 }
