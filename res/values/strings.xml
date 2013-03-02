@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CloudClipboard</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="sub_app_name">MyClips - All Clipboards</string>
+    <string name="clip_monitor_service">MyClips Clipboard Monitor</string>
+    <string name="create_new_clipboard">New clipboard</string>
+    <string name="email_clipboard">Email clipboard</string>
+    <string name="list_all_clipboards">List all clipboards</string>
+    <string name="delete_clipboard">Delete clipboard</string>
+    <string name="context_info">Info</string>
+    <string name="context_delete_clip">Delete</string>
+    <string name="context_email_clip">Email</string>
+    <string name="clip_text_type">Text</string>
+    <string name="clip_image_type">Image</string>
+
+</resources>
