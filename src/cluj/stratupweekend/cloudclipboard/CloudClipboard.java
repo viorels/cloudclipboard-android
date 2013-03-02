@@ -20,6 +20,14 @@ public class CloudClipboard extends Activity {
 		
 		startClipboardMonitor();
 	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		stopService(new Intent(this,
+                ClipboardMonitor.class));
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -82,36 +82,41 @@ public class ClipboardMonitor extends Service {
 			pubnub.subscribe(args, new Callback() {
 				public void connectCallback(String channel,
 						Object message) {
+					Log.d(TAG, message.toString());
 					
 				}
 
 				public void disconnectCallback(String channel,
 						Object message) {
+					Log.d(TAG, message.toString());
 					
 				}
 
 				@Override
 				public void reconnectCallback(String channel,
 						Object message) {
+					Log.d(TAG, message.toString());
 					
 				}
 
 				public void successCallback(String channel,
 						Object message) {
 					// TODO put in clipboard here
+					Log.d(TAG, "success callback");
 					@SuppressWarnings("unused")
 					String m = message.toString();
+					mCM.setText(m);
 					
 				}
 
 				public void errorCallback(String channel,
 						Object message) {
-					
+					Log.e(TAG, message.toString());
 				}
 			});
 
 		} catch (Exception e) {
-
+				e.printStackTrace();
 		}
         
     }
@@ -134,6 +139,7 @@ public class ClipboardMonitor extends Service {
         mNM.cancel(R.string.clip_monitor_service);
         mTask.cancel();
 //        mDbAdapter.close();
+        pubnub.unsubscribe(channel);
     }
     
     @Override
